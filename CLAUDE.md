@@ -2,11 +2,26 @@
 
 La web dels **agents de veu i WhatsApp amb IA de Nubo Telecom**. Nubo és partner:
 ven el producte amb la seva marca i el seu ecosistema, i **la web no diu enlloc
-qui hi ha al darrere**. Res de «Nertel» ni de «Nertus» al codi visible, als
+qui hi ha al darrere**. Res de «Nertel» ni de «Nertus» al codi de la web, als
 textos, a les metadades ni als noms de fitxer públics.
 
-És la web del producte d'un client, no una demo per a un lead: **no porta el kit
-de demo** (`demo-leads`).
+L'única excepció és el kit de demo (`src/demo-kit`) mentre la web és una demo: la
+pàgina de bloqueig i la insígnia són de Nertel. Marxen amb el kit.
+
+## Demo per a un lead
+
+Ara mateix és una **demo per a Nubo** i porta el kit de demo (skill `demo-leads`):
+només s'hi entra amb un enllaç personal que caduca; qui no el porta veu la pàgina de
+bloqueig, i PostHog registra la visita (`site`: `nubo-ia`).
+
+- Enllaços: `pnpm demo:link "Nom del lead" --days 15`. El secret (`DEMO_SECRET`) és a
+  `.env.local` i a Vercel; no s'imprimeix mai.
+- `src/demo-kit` **no s'edita aquí**: la font és `nertel-demo-kit/kit/demo-kit`.
+- El proxy (`src/proxy.ts`) passa primer per la porta i després resol l'idioma; si
+  redirigeix, s'emporta les galetes de la porta i treu el codi de l'adreça.
+- Quan sigui la web de Nubo, es treu el kit sencer: la porta del proxy, `DemoTracker`
+  i `DemoBadge` del layout, `src/demo-kit`, `posthog-js`, l'script `demo:link` i les
+  variables `DEMO_*` i `NEXT_PUBLIC_POSTHOG_*` de Vercel.
 
 ## Idiomes
 

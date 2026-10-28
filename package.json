@@ -17,12 +17,14 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "check": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "demo:link": "node --env-file-if-exists=.env.local src/demo-kit/link.ts"
   },
   "dependencies": {
     "@react-three/drei": "10.7.9",
     "@react-three/fiber": "9.8.2",
     "next": "16.4.3",
+    "posthog-js": "1.441.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "three": "0.186.1"
