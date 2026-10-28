@@ -88,7 +88,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </section>
         <Benefits t={t.benefits} />
         <BeforeAfter t={t.compare} />
-        <SectorsGrid t={t.sectors} />
+        <SectorsGrid t={t.sectors} lang={lang} />
         <Ecosystem t={t.ecosystem} />
         <Onboarding t={t.onboarding} />
         <Group t={t.group} />

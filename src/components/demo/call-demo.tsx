@@ -31,16 +31,25 @@ export function CallDemo({
 
   // «Escuchar ejemplo» des de la graella de sectors porta aquí amb el sector triat.
   useEffect(() => {
-    const onHash = () => {
+    const onHash = (behavior: ScrollBehavior = 'smooth') => {
       const id = window.location.hash.replace(/^#demo-/, '');
       const match = DEMO_SECTORS.find((item) => item.id === id);
       if (!match || id === window.location.hash) return;
       setSectorId(match.id);
       setChannel('call');
-      document.getElementById('demo')?.scrollIntoView();
+      document.getElementById('demo')?.scrollIntoView({ behavior });
     };
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
+    const onHashChange = () => onHash();
+    window.addEventListener('hashchange', onHashChange);
+    // Des de la pàgina de sectors s'hi arriba amb el hash ja posat: es llegeix
+    // un cop hidratat (no al render, que al servidor no hi ha hash), i quan
+    // «Cómo funciona» ja té la seva alçada definitiva, que mou la demo avall.
+    // Salt directe: la pàgina tot just s'ha obert.
+    const initial = window.setTimeout(() => onHash('instant'), 900);
+    return () => {
+      window.removeEventListener('hashchange', onHashChange);
+      window.clearTimeout(initial);
+    };
   }, []);
 
   return (

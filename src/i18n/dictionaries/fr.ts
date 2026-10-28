@@ -246,6 +246,11 @@ export const fr: Dictionary = {
     intro:
       'Chaque agent est préparé pour une entreprise précise. Voici les plus courantes ; si la vôtre n’y figure pas, c’est possible aussi.',
     listen: 'Écouter l’exemple',
+    seeAll: 'Voir tous les secteurs',
+    pageTitle: 'Secteurs · Nubo IA, agents vocaux et WhatsApp avec IA',
+    pageDescription:
+      'Cliniques, restaurants, agences immobilières, garages, cabinets, hôtels et plus : ce que fait un agent IA de Nubo dans chaque secteur.',
+    back: 'Retour à l’accueil',
     items: {
       salud: {
         name: 'Cliniques et santé',

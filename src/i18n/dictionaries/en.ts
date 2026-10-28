@@ -234,6 +234,11 @@ export const en: Dictionary = {
     intro:
       'Each agent is set up for a specific business. These are the most common; if yours isn’t listed, we can do it too.',
     listen: 'Listen to an example',
+    seeAll: 'See all sectors',
+    pageTitle: 'Sectors · Nubo IA, AI voice and WhatsApp agents',
+    pageDescription:
+      'Clinics, restaurants, estate agents, garages, advisory firms, hotels and more: what a Nubo AI agent does in each sector.',
+    back: 'Back to home',
     items: {
       salud: {
         name: 'Clinics and healthcare',

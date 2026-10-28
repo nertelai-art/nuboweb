@@ -447,6 +447,17 @@ body {
 .flow[data-s3] .flow-know {
   opacity: 0.5;
 }
+/* Mòbil i tauleta: no hi cap tot alhora. Cada pas ensenya només les seves peces. */
+@media (max-width: 1023.98px) {
+  .flow[data-s2] .flow-in {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  .flow[data-s3] .flow-know {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
 
 /* Telèfon de la demo quan surt de la pantalla: petit, a baix a la dreta. */
 .phone-dock {

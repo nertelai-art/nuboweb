@@ -9,13 +9,21 @@ const GROUP = [
   { href: site.centralita, label: 'Centralita Virtual' },
 ];
 
-export function SiteFooter({ t, nav }: { t: Dictionary['footer']; nav: Dictionary['nav'] }) {
+export function SiteFooter({
+  t,
+  nav,
+  base = '',
+}: {
+  t: Dictionary['footer'];
+  nav: Dictionary['nav'];
+  base?: string;
+}) {
   const links = [
-    { href: '#como-funciona', label: nav.how },
-    { href: '#demo', label: nav.demo },
-    { href: '#ventajas', label: nav.benefits },
-    { href: '#sectores', label: nav.sectors },
-    { href: '#preguntas', label: nav.faq },
+    { href: `${base}#como-funciona`, label: nav.how },
+    { href: `${base}#demo`, label: nav.demo },
+    { href: `${base}#ventajas`, label: nav.benefits },
+    { href: `${base}#sectores`, label: nav.sectors },
+    { href: `${base}#preguntas`, label: nav.faq },
   ];
   return (
     <footer className="border-t border-[var(--line)] bg-[var(--bg-deep)]">

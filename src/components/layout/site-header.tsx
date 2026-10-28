@@ -6,17 +6,26 @@ import type { Dictionary } from '@/i18n/dictionaries';
 import { NuboIaLogo } from './nubo-ia-logo';
 import { LanguageMenu, ThemeToggle } from './header-controls';
 
-export function SiteHeader({ lang, t }: { lang: Locale; t: Dictionary['nav'] }) {
+/** `base`: buit a la landing (àncores); `/${lang}` a les altres pàgines, perquè les àncores hi tornin. */
+export function SiteHeader({
+  lang,
+  t,
+  base = '',
+}: {
+  lang: Locale;
+  t: Dictionary['nav'];
+  base?: string;
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
   const links = [
-    { href: '#como-funciona', label: t.how },
-    { href: '#demo', label: t.demo },
-    { href: '#ventajas', label: t.benefits },
-    { href: '#sectores', label: t.sectors },
-    { href: '#grupo', label: t.group },
-    { href: '#preguntas', label: t.faq },
+    { href: `${base}#como-funciona`, label: t.how },
+    { href: `${base}#demo`, label: t.demo },
+    { href: `${base}#ventajas`, label: t.benefits },
+    { href: `${base}#sectores`, label: t.sectors },
+    { href: `${base}#grupo`, label: t.group },
+    { href: `${base}#preguntas`, label: t.faq },
   ];
 
   useEffect(() => {
@@ -41,7 +50,7 @@ export function SiteHeader({ lang, t }: { lang: Locale; t: Dictionary['nav'] }) 
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-        <a href="#inicio" className="flex shrink-0 items-center gap-2" aria-label={t.home}>
+        <a href={`${base}#inicio`} className="flex shrink-0 items-center gap-2" aria-label={t.home}>
           <NuboIaLogo className="h-8 w-auto sm:h-9" />
         </a>
 
@@ -64,7 +73,7 @@ export function SiteHeader({ lang, t }: { lang: Locale; t: Dictionary['nav'] }) 
           <LanguageMenu current={lang} label={t.language} />
           <ThemeToggle toLight={t.themeToLight} toDark={t.themeToDark} />
           <a
-            href="#contacto"
+            href={`${base}#contacto`}
             className="btn btn-primary hidden min-h-10 px-4 text-sm md:inline-flex"
           >
             {t.cta}
@@ -111,7 +120,7 @@ export function SiteHeader({ lang, t }: { lang: Locale; t: Dictionary['nav'] }) 
             ))}
           </ul>
           <a
-            href="#contacto"
+            href={`${base}#contacto`}
             onClick={() => setOpen(false)}
             className="btn btn-primary mt-4 w-full"
           >

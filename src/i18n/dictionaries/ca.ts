@@ -219,6 +219,11 @@ export const ca: Dictionary = {
     intro:
       'Cada agent es prepara per a un negoci concret. Aquests són els més habituals; si el teu no hi és, també.',
     listen: 'Escoltar exemple',
+    seeAll: 'Veure tots els sectors',
+    pageTitle: 'Sectors · Nubo IA, agents de veu i WhatsApp amb IA',
+    pageDescription:
+      "Clíniques, restaurants, immobiliàries, tallers, assessories, hotels i més: què fa un agent d'IA de Nubo a cada sector.",
+    back: "Tornar a l'inici",
     items: {
       salud: {
         name: 'Clíniques i salut',

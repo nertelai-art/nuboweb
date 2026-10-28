@@ -145,7 +145,18 @@ export function DemoPlayer({
 
           <button
             type="button"
-            onClick={() => (running ? reset() : void start())}
+            onClick={() => {
+              if (running) return reset();
+              void start();
+              // A mòbil el botó queda damunt del telèfon: s'enquadra el telèfon sencer.
+              if (window.matchMedia('(max-width: 767.98px)').matches) {
+                const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                slot.current?.scrollIntoView({
+                  block: 'center',
+                  behavior: smooth ? 'smooth' : 'auto',
+                });
+              }
+            }}
             className={`btn mt-3 min-h-14 w-full text-base ${
               running
                 ? 'bg-[#ef4444] text-white hover:bg-[#f05a5a]'

@@ -91,7 +91,38 @@ export function NShowcase({ t }: { t: Dictionary['how'] }) {
               </h2>
             </div>
           </div>
-          <ol data-step-list className="mt-4 grid grid-cols-4 gap-2 sm:gap-3">
+          {/* Mòbil i tauleta: un sol pas a la vista, sencer, amb la barra dels quatre. */}
+          <div className="mt-3 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-3.5 shadow-[var(--shadow)] lg:hidden">
+            <ol data-step-list aria-hidden="true" className="grid grid-cols-4 gap-1.5">
+              {t.steps.map((step, index) => (
+                <li
+                  key={step.title}
+                  data-state={index === 0 ? 'active' : 'todo'}
+                  className="h-1 rounded-full bg-[var(--line-strong)] transition duration-500 data-[state=active]:bg-[var(--color-nubo-lime)] data-[state=done]:bg-[var(--color-nubo-teal)]"
+                />
+              ))}
+            </ol>
+            <ol data-step-list className="mt-3">
+              {t.steps.map((step, index) => (
+                <li
+                  key={step.title}
+                  data-state={index === 0 ? 'active' : 'todo'}
+                  className="hidden gap-3 data-[state=active]:flex"
+                >
+                  <span className="font-display flex size-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-nubo-lime)] text-xs font-bold text-[var(--color-night-950)]">
+                    {index + 1}
+                  </span>
+                  <span>
+                    <strong className="font-display block leading-tight">{step.title}</strong>
+                    <span className="mt-1 block text-sm leading-snug text-[var(--ink-muted)]">
+                      {step.text}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <ol data-step-list className="mt-4 hidden grid-cols-4 gap-2 sm:gap-3 lg:grid">
             {t.steps.map((step, index) => (
               <li
                 key={step.title}
@@ -114,22 +145,10 @@ export function NShowcase({ t }: { t: Dictionary['how'] }) {
               </li>
             ))}
           </ol>
-          <ol data-step-list className="mt-2 sm:hidden" aria-hidden="true">
-            {t.steps.map((step, index) => (
-              <li
-                key={step.title}
-                data-state={index === 0 ? 'active' : 'todo'}
-                className="hidden data-[state=active]:block"
-              >
-                <strong className="font-display block">{step.title}</strong>
-                <span className="text-sm text-[var(--ink-muted)]">{step.text}</span>
-              </li>
-            ))}
-          </ol>
         </div>
 
         {/* L'esquema */}
-        <div className="relative mx-auto mt-3 w-full max-w-7xl flex-1 px-4 pb-6 sm:px-6 lg:px-8">
+        <div className="relative mx-auto mt-3 w-full max-w-7xl flex-1 px-4 pb-14 sm:px-6 lg:px-8 lg:pb-6">
           <div className="relative h-full min-h-[22rem]">
             {is3d && near ? (
               <div className="absolute inset-0">

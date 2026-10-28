@@ -235,6 +235,11 @@ export const es = {
     intro:
       'Cada agente se prepara para un negocio concreto. Estos son los más habituales; si el tuyo no está, también.',
     listen: 'Escuchar ejemplo',
+    seeAll: 'Ver todos los sectores',
+    pageTitle: 'Sectores · Nubo IA, agentes de voz y WhatsApp con IA',
+    pageDescription:
+      'Clínicas, restaurantes, inmobiliarias, talleres, asesorías, hoteles y más: qué hace un agente de IA de Nubo en cada sector.',
+    back: 'Volver al inicio',
     items: {
       salud: {
         name: 'Clínicas y salud',
