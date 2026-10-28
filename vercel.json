@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm build",
+  "ignoreCommand": "if [ \"$VERCEL_ENV\" = \"production\" ] && [ \"$ALLOW_PRODUCTION\" != \"1\" ] && [ \"$VERCEL_GIT_COMMIT_REF\" != \"main\" ]; then echo \"Produccio nomes quan es demana: vercel deploy --prod --build-env ALLOW_PRODUCTION=1\"; exit 0; fi; exit 1"
+}

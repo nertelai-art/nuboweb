@@ -102,6 +102,13 @@ i és la mateixa per al vector i per a l'escena 3D: si canvia, canvia a tot arre
 - Àudios gravats amb la veu de debò del producte en lloc de la del navegador:
   arreglaria també els idiomes sense veu al sistema.
 
+## Desplegament
+
+Vercel, projecte `nuboweb` (equip `nertelai-7298s-projects`), connectat a GitHub
+(`nertelai-art/nuboweb`, públic). Les pujades a `developer` no despleguen a producció
+(`ignoreCommand` de `vercel.json`): a producció només quan l'usuari ho diu, cada vegada,
+amb `npx vercel deploy --prod --build-env ALLOW_PRODUCTION=1`.
+
 ## Qualitat
 
 ```bash
