@@ -53,23 +53,28 @@ export function DemoPlayer({
     reducedMotion,
   });
 
-  // El telèfon flota quan la conversa va i el seu lloc ja no es veu.
+  // El telèfon flota quan la conversa va i el seu lloc ja no es veu. Però només
+  // si ja s'ha vist des que ha començat: a mòbil, en prémer el botó la pàgina
+  // baixa fins al telèfon, i mentrestant no s'ha de posar a flotar.
   const slot = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(true);
+  const [seen, setSeen] = useState(false);
   useEffect(() => {
     const element = slot.current;
     if (!element) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setInView(Boolean(entry?.isIntersecting)),
-      {
-        threshold: 0.25,
+      ([entry]) => {
+        const visible = Boolean(entry?.isIntersecting);
+        setInView(visible);
+        if (visible) setSeen(true);
       },
+      { threshold: 0.25 },
     );
     observer.observe(element);
     return () => observer.disconnect();
   }, []);
   const running = status === 'ringing' || status === 'live';
-  const floating = running && !inView;
+  const floating = running && seen && !inView;
 
   const isCall = channel === 'call';
   const statusText = isCall
@@ -147,6 +152,8 @@ export function DemoPlayer({
             type="button"
             onClick={() => {
               if (running) return reset();
+              // Comença «vist» només si el telèfon ja és a la pantalla.
+              setSeen(inView);
               void start();
               // A mòbil el botó queda damunt del telèfon: s'enquadra el telèfon sencer.
               if (window.matchMedia('(max-width: 767.98px)').matches) {

@@ -31,6 +31,14 @@ const KNOW_POS = [
   [33, 84],
   [31, 30],
 ] as const;
+// A mòbil i tauleta, dins de la caixa de la N (no de tot l'esquema): a dalt i als costats.
+const KNOW_POS_COMPACT = [
+  [50, 9],
+  [86, 32],
+  [80, 90],
+  [20, 90],
+  [14, 32],
+] as const;
 const IN_Y = [24, 50, 76];
 const OUT_Y = [16, 38.5, 61.5, 84];
 
@@ -66,7 +74,7 @@ export function NShowcase({ t }: { t: Dictionary['how'] }) {
       id="como-funciona"
       ref={section}
       aria-labelledby="como-funciona-titulo"
-      className={`relative bg-[var(--bg-deep)] ${is3d ? 'h-[420vh]' : ''}`}
+      className={`relative bg-[var(--bg-deep)] ${is3d ? 'h-[300vh] lg:h-[420vh]' : ''}`}
     >
       <div
         ref={stage}
@@ -147,18 +155,11 @@ export function NShowcase({ t }: { t: Dictionary['how'] }) {
           </ol>
         </div>
 
-        {/* L'esquema */}
-        <div className="relative mx-auto mt-3 w-full max-w-7xl flex-1 px-4 pb-14 sm:px-6 lg:px-8 lg:pb-6">
-          <div className="relative h-full min-h-[22rem]">
-            {is3d && near ? (
-              <div className="absolute inset-0">
-                <NScene progress={progress} reducedMotion={reducedMotion} compact={compact} />
-              </div>
-            ) : null}
-            {mode === 'static' ? (
-              <NuboMark className="absolute top-1/2 left-1/2 h-36 w-auto -translate-x-1/2 -translate-y-1/2" />
-            ) : null}
-
+        {/* L'esquema. A escriptori, tot posat en % sobre la mateixa caixa; a mòbil i
+            tauleta, en columna (entrades, la N, sortides), perquè res no es trepitgi
+            ni quedi tallat. */}
+        <div className="relative mx-auto mt-3 min-h-0 w-full max-w-7xl flex-1 px-4 pb-14 sm:px-6 lg:px-8 lg:pb-6">
+          <div className="relative flex h-full flex-col gap-2 lg:block lg:min-h-[22rem]">
             {/* Connectors (escriptori) */}
             <svg
               viewBox="0 0 100 100"
@@ -192,66 +193,80 @@ export function NShowcase({ t }: { t: Dictionary['how'] }) {
               ))}
             </svg>
 
-            {/* Entrades */}
-            <ul className="absolute inset-x-0 top-0 flex justify-center gap-2 lg:inset-x-auto lg:top-0 lg:left-0 lg:block lg:h-full lg:w-[25%]">
-              {t.inputs.map((input, i) => (
-                <li
-                  key={input.title}
-                  className="flow-in lg:absolute lg:right-0 lg:left-0 lg:-translate-y-1/2"
-                  style={{ ['--i' as string]: String(i), top: compact ? undefined : `${IN_Y[i]}%` }}
-                >
-                  <FlowCard
-                    icon={INPUT_ICONS[i] ?? 'phone'}
-                    color="#2160af"
-                    title={input.title}
-                    detail={input.detail}
-                    compact={compact}
-                  />
-                </li>
-              ))}
-            </ul>
+            {/* La N i el que sap */}
+            <div className="relative min-h-0 flex-1 lg:absolute lg:inset-0">
+              {is3d && near ? (
+                <div className="absolute inset-0">
+                  <NScene progress={progress} reducedMotion={reducedMotion} compact={compact} />
+                </div>
+              ) : null}
+              {mode === 'static' ? (
+                <NuboMark className="absolute top-1/2 left-1/2 h-28 w-auto -translate-x-1/2 -translate-y-1/2 lg:h-36" />
+              ) : null}
+              <ul aria-label={t.agentLabel}>
+                {t.knowledge.map((item, i) => {
+                  const [x, y] = (compact ? KNOW_POS_COMPACT : KNOW_POS)[i] ?? [50, 50];
+                  return (
+                    <li
+                      key={item}
+                      className="flow-know font-display absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-[color-mix(in_oklab,var(--color-nubo-teal)_45%,transparent)] bg-[var(--surface)] px-3 py-1 text-xs font-bold whitespace-nowrap text-[var(--teal-ink)] shadow-[var(--shadow)] sm:text-sm"
+                      style={{ left: `${x}%`, top: `${y}%`, ['--i' as string]: String(i) }}
+                    >
+                      {item}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
 
-            {/* El que sap */}
-            <ul aria-label={t.agentLabel}>
-              {t.knowledge.map((item, i) => {
-                const [x, y] = KNOW_POS[i] ?? [50, 50];
-                // A mòbil, més a prop del centre perquè hi càpiguen.
-                const left = compact ? 50 + (x - 50) * 1.7 : x;
-                const top = compact ? 50 + (y - 50) * 0.62 : y;
-                return (
+            {/* A mòbil, entrades i sortides comparteixen el lloc de baix: mai no es
+                veuen alhora, i així la N té més espai. A escriptori, `contents`. */}
+            <div className="relative grid shrink-0 lg:contents">
+              {/* Entrades */}
+              <ul className="z-10 col-start-1 row-start-1 flex justify-center gap-2 self-end lg:absolute lg:top-0 lg:left-0 lg:block lg:h-full lg:w-[25%]">
+                {t.inputs.map((input, i) => (
                   <li
-                    key={item}
-                    className="flow-know font-display absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-[color-mix(in_oklab,var(--color-nubo-teal)_45%,transparent)] bg-[var(--surface)] px-3 py-1 text-xs font-bold text-[var(--teal-ink)] shadow-[var(--shadow)] sm:text-sm"
-                    style={{ left: `${left}%`, top: `${top}%`, ['--i' as string]: String(i) }}
+                    key={input.title}
+                    className="flow-in min-w-0 flex-1 lg:absolute lg:right-0 lg:left-0 lg:-translate-y-1/2"
+                    style={{
+                      ['--i' as string]: String(i),
+                      top: compact ? undefined : `${IN_Y[i]}%`,
+                    }}
                   >
-                    {item}
+                    <FlowCard
+                      icon={INPUT_ICONS[i] ?? 'phone'}
+                      color="#2160af"
+                      title={input.title}
+                      detail={input.detail}
+                      compact={compact}
+                    />
                   </li>
-                );
-              })}
-            </ul>
+                ))}
+              </ul>
 
-            {/* Salides */}
-            <ul className="absolute inset-x-0 bottom-0 grid grid-cols-2 gap-2 lg:inset-x-auto lg:top-0 lg:right-0 lg:bottom-auto lg:block lg:h-full lg:w-[25%]">
-              {t.outputs.map((output, i) => (
-                <li
-                  key={output.title}
-                  className="flow-out lg:absolute lg:right-0 lg:left-0 lg:-translate-y-1/2"
-                  style={{
-                    ['--i' as string]: String(i),
-                    top: compact ? undefined : `${OUT_Y[i]}%`,
-                  }}
-                >
-                  <FlowCard
-                    icon={OUTPUT_ICONS[i] ?? 'check'}
-                    color="#88c023"
-                    title={output.title}
-                    detail={output.detail}
-                    done
-                    compact={compact}
-                  />
-                </li>
-              ))}
-            </ul>
+              {/* Sortides */}
+              <ul className="z-10 col-start-1 row-start-1 grid grid-cols-2 gap-2 lg:absolute lg:top-0 lg:right-0 lg:block lg:h-full lg:w-[25%]">
+                {t.outputs.map((output, i) => (
+                  <li
+                    key={output.title}
+                    className="flow-out lg:absolute lg:right-0 lg:left-0 lg:-translate-y-1/2"
+                    style={{
+                      ['--i' as string]: String(i),
+                      top: compact ? undefined : `${OUT_Y[i]}%`,
+                    }}
+                  >
+                    <FlowCard
+                      icon={OUTPUT_ICONS[i] ?? 'check'}
+                      color="#88c023"
+                      title={output.title}
+                      detail={output.detail}
+                      done
+                      compact={compact}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 

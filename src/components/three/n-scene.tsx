@@ -183,8 +183,9 @@ function Choreography({ progress, reducedMotion, compact }: NSceneProps) {
     const visibleW = visibleH * viewport.aspect;
     const fit = (fracH: number, fracW: number) =>
       Math.min((visibleH * fracH) / N_H, (visibleW * fracW) / N_W);
-    const big = fit(0.72, 0.8);
-    const small = compact ? fit(0.3, 0.42) : fit(0.36, 0.22);
+    // A mòbil el canvas és només la caixa del mig (vegeu n-showcase): hi pot ser més gran.
+    const big = compact ? fit(0.86, 0.8) : fit(0.72, 0.8);
+    const small = compact ? fit(0.56, 0.42) : fit(0.36, 0.22);
     const shrink = easeInOut(phase(p, N_PHASES.shrink));
     const settle = easeInOut(phase(p, N_PHASES.settle));
 
