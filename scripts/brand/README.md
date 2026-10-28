@@ -9,3 +9,4 @@ logo oficial de Nubo Telecom (`Logo-Nubo-Telecom.png`, 1794×566, de nubotelecom
   fila a fila la zona visible de cada cinta.
 - `gen_shapes.py n-rows.json src/components/layout/nubo-shapes.ts`: en fa els
   polígons que fan servir l'escena 3D i el logo de Nubo IA.
+- `avatar.py public/brand/nubo-n.png avatar.png`: l'avatar quadrat (512 px) del projecte a Vercel.
