@@ -1,0 +1,5 @@
+# pnpm 10 no executa scripts d'instal·lació sense permís.
+# unrs-resolver (via eslint-config-next) només comprova que té el binari
+# precompilat; sense el script funciona igual, així que queda ignorat.
+ignoredBuiltDependencies:
+  - unrs-resolver
