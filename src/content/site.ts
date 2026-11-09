@@ -1,9 +1,9 @@
 /**
  * Dades de Nubo Telecom, tal com surten a nubotelecom.com (28/10/2026).
- * El domini de la web d'IA encara no està decidit: `url` és provisional.
+ * La web de Nubo IA viu a nuboai.es (domini del client, 09/11/2026).
  */
 export const site = {
-  url: 'https://nubotelecom.com',
+  url: 'https://nuboai.es',
   product: 'Nubo IA',
   company: 'Nubo Telecom',
   phone: '900 264 324',

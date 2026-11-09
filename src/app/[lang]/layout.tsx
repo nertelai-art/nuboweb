@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Figtree, Montserrat } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { site } from '@/content/site';
-import { DemoBadge } from '@/demo-kit/DemoBadge';
-import { DemoTracker } from '@/demo-kit/DemoTracker';
 import { isLocale, LOCALE_TAGS, LOCALES } from '@/i18n/config';
 import { getDictionary } from '@/i18n/dictionaries';
 import '../globals.css';
@@ -82,9 +80,6 @@ export default async function LocaleLayout({ children, params }: Props) {
           {t.nav.skip}
         </a>
         {children}
-        {/* Demo per a un lead (src/demo-kit): seguiment i insígnia. Es treuen quan sigui la web de Nubo. */}
-        <DemoTracker site="nubo-ia" />
-        <DemoBadge site="nubo-ia" locale={lang === 'ca' ? 'ca' : 'es'} />
       </body>
     </html>
   );

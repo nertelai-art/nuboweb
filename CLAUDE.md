@@ -2,26 +2,11 @@
 
 La web dels **agents de veu i WhatsApp amb IA de Nubo Telecom**. Nubo és partner:
 ven el producte amb la seva marca i el seu ecosistema, i **la web no diu enlloc
-qui hi ha al darrere**. Res de «Nertel» ni de «Nertus» al codi de la web, als
-textos, a les metadades ni als noms de fitxer públics.
+qui hi ha al darrere**. Res de «Nertel» ni de «Nertus» al codi, als textos, a les
+metadades ni als noms de fitxer públics.
 
-L'única excepció és el kit de demo (`src/demo-kit`) mentre la web és una demo: la
-pàgina de bloqueig i la insígnia són de Nertel. Marxen amb el kit.
-
-## Demo per a un lead
-
-Ara mateix és una **demo per a Nubo** i porta el kit de demo (skill `demo-leads`):
-només s'hi entra amb un enllaç personal que caduca; qui no el porta veu la pàgina de
-bloqueig, i PostHog registra la visita (`site`: `nubo-ia`).
-
-- Enllaços: `pnpm demo:link "Nom del lead" --days 15`. El secret (`DEMO_SECRET`) és a
-  `.env.local` i a Vercel; no s'imprimeix mai.
-- `src/demo-kit` **no s'edita aquí**: la font és `nertel-demo-kit/kit/demo-kit`.
-- El proxy (`src/proxy.ts`) passa primer per la porta i després resol l'idioma; si
-  redirigeix, s'emporta les galetes de la porta i treu el codi de l'adreça.
-- Quan sigui la web de Nubo, es treu el kit sencer: la porta del proxy, `DemoTracker`
-  i `DemoBadge` del layout, `src/demo-kit`, `posthog-js`, l'script `demo:link` i les
-  variables `DEMO_*` i `NEXT_PUBLIC_POSTHOG_*` de Vercel.
+És la **web de debò de Nubo**, al domini `nuboai.es` (acceptada el 09/11/2026). Va
+ser una demo amb el kit de demo de Nertel; el kit ja s'ha tret sencer i **no hi torna**.
 
 ## Idiomes
 
@@ -86,7 +71,7 @@ i és la mateixa per al vector i per a l'escena 3D: si canvia, canvia a tot arre
 
 ## Pendent de validar amb Nubo
 
-- Nom del producte («Nubo IA») i domini (`site.url` és provisional).
+- Nom del producte («Nubo IA»).
 - Logo de Nubo IA (`nubo-ia-logo.tsx`): proposta nostra a l'estil de Nubo Energy i
   Nubo Security (bafarada amb ones de veu sobre el pal llima). El text és
   Montserrat; per a un fitxer definitiu caldria passar-lo a corbes.
@@ -108,6 +93,12 @@ Vercel, projecte `nuboweb` (equip `nertelai-7298s-projects`), connectat a GitHub
 (`nertelai-art/nuboweb`, públic). Les pujades a `developer` no despleguen a producció
 (`ignoreCommand` de `vercel.json`): a producció només quan l'usuari ho diu, cada vegada,
 amb `npx vercel deploy --prod --build-env ALLOW_PRODUCTION=1`.
+
+Domini: `nuboai.es` (principal) i `www.nuboai.es` (redirigeix al principal), afegits al
+projecte de Vercel. El domini és de Nubo i els registres DNS els posen ells al seu
+proveïdor; nosaltres no hi toquem. `site.url` n'és la font: canònica, `sitemap.xml` i
+`robots.txt`. Fora de producció, `robots.txt` ho tanca tot perquè les
+previsualitzacions no s'indexin.
 
 ## Qualitat
 

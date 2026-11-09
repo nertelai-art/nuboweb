@@ -158,7 +158,7 @@ export function NShowcase({ t }: { t: Dictionary['how'] }) {
         {/* L'esquema. A escriptori, tot posat en % sobre la mateixa caixa; a mòbil i
             tauleta, en columna (entrades, la N, sortides), perquè res no es trepitgi
             ni quedi tallat. */}
-        <div className="relative mx-auto mt-3 min-h-0 w-full max-w-7xl flex-1 px-4 pb-14 sm:px-6 lg:px-8 lg:pb-6">
+        <div className="relative mx-auto mt-3 min-h-0 w-full max-w-7xl flex-1 px-4 pb-6 sm:px-6 lg:px-8">
           <div className="relative flex h-full flex-col gap-2 lg:block lg:min-h-[22rem]">
             {/* Connectors (escriptori) */}
             <svg
