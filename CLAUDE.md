@@ -5,7 +5,7 @@ ven el producte amb la seva marca i el seu ecosistema, i **la web no diu enlloc
 qui hi ha al darrere**. Res de «Nertel» ni de «Nertus» al codi, als textos, a les
 metadades ni als noms de fitxer públics.
 
-És la **web de debò de Nubo**, al domini `nuboai.es` (acceptada el 09/11/2026). Va
+És la **web de debò de Nubo**, al domini `nuboia.es` (acceptada el 09/11/2026). Va
 ser una demo amb el kit de demo de Nertel; el kit ja s'ha tret sencer i **no hi torna**.
 
 ## Idiomes
@@ -104,10 +104,11 @@ Vercel, projecte `nuboweb` (equip `nertelai-7298s-projects`), connectat a GitHub
 (`ignoreCommand` de `vercel.json`): a producció només quan l'usuari ho diu, cada vegada,
 amb `npx vercel deploy --prod --build-env ALLOW_PRODUCTION=1`.
 
-Domini: `nuboai.es` (principal) i `www.nuboai.es` (redirigeix al principal), afegits al
+Domini: `nuboia.es` (principal) i `www.nuboia.es` (redirigeix al principal), afegits al
 projecte de Vercel. El domini és de Nubo i els registres DNS els posen ells al seu
 proveïdor; nosaltres no hi toquem. `site.url` n'és la font: canònica, `sitemap.xml` i
-`robots.txt`. Fora de producció, `robots.txt` ho tanca tot perquè les
+`robots.txt`. Al projecte també hi ha `nuboai.es` (amb les lletres girades): és el nom
+que ens van passar per error, ningú no l'ha registrat i no fa res. Fora de producció, `robots.txt` ho tanca tot perquè les
 previsualitzacions no s'indexin.
 
 ## Qualitat

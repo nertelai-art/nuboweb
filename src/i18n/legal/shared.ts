@@ -21,4 +21,4 @@ export const BROWSER_HELP = [
 ];
 
 export const H = holder;
-export const SITE_DOMAIN = 'nuboai.es';
+export const SITE_DOMAIN = 'nuboia.es';

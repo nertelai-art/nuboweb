@@ -3,7 +3,7 @@ import { site } from '@/content/site';
 
 /**
  * Les previsualitzacions no s'indexen. A producció sí; si algú arriba per
- * nuboweb.vercel.app, la canònica de cada pàgina ja apunta a nuboai.es.
+ * nuboweb.vercel.app, la canònica de cada pàgina ja apunta a nuboia.es.
  */
 export default function robots(): MetadataRoute.Robots {
   const production = process.env.VERCEL_ENV === 'production';
