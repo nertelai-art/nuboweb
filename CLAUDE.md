@@ -60,11 +60,19 @@ i és la mateixa per al vector i per a l'escena 3D: si canvia, canvia a tot arre
 
 - Guions escrits als diccionaris (`demos`), **no** un model: sona sempre igual i
   no gasta res. Els negocis són inventats i la web ho diu.
-- La veu és la del navegador (Web Speech API). El text apareix paraula a paraula
-  quan la veu la diu (`onboundary`); si el sistema no ho avisa o no té àudio, al
-  ritme estimat. La veu de l'agent és de dona; la de qui truca, segons el
-  personatge (`callerVoice`). Les veus són les de l'idioma de la pàgina; si el
-  sistema no en té (passa sovint amb el català), la conversa surt escrita i ho diu.
+- Les trucades sonen amb **àudios gravats amb ElevenLabs** (`public/audio/demo/`,
+  índex a `src/components/demo/voice-tracks.ts`). L'agent té la veu de l'agent
+  «Nubo» de producció (Sara Martin); qui truca, veus castellanes de l'espai de
+  treball segons el personatge (`voices.ts`). Model `eleven_v3`, que també parla
+  català, anglès i francès. El text apareix quan la veu arriba a cada paraula.
+- Cada gravació porta una clau del text i la veu: si es toca un guió, aquell torn
+  torna a la veu del navegador fins que es regrava. Per regravar:
+  `pnpm voice:demos` amb `ELEVENLABS_API_KEY` a `.env.local`, o bé
+  `pnpm voice:demos --jobs <fitxer>`, gravar-los amb el connector d'ElevenLabs als
+  mateixos noms de fitxer i `pnpm voice:demos --import`.
+- Sense gravació, la veu del navegador (Web Speech API), amb `onboundary` per
+  sincronitzar el text; si el sistema no té veu en aquell idioma, la conversa
+  surt escrita i ho diu.
 - Si la conversa va i el telèfon surt de la pantalla, es queda petit a baix a la
   dreta (`.phone-dock[data-floating]`).
 - Amb `prefers-reduced-motion`, la conversa surt sencera de cop.
@@ -79,13 +87,15 @@ i és la mateixa per al vector i per a l'escena 3D: si canvia, canvia a tot arre
   `scripts/brand/`): si Nubo ens dona el logo en vector, es refà a partir d'aquell.
 - Afirmacions de producte: integració directa amb la Centralita Virtual, idiomes,
   RGPD i suport. Estan escrites amb prudència, però les ha de confirmar Nubo.
-- Textos legals (avís legal, privacitat, galetes).
+- Textos legals (`src/i18n/legal/`): adaptats dels de nubotelecom.com (titular
+  Nubo Cloud S.L., dades a `holder` de `site.ts`) a aquesta web, que no té
+  formulari i només fa servir la galeta de l'idioma. Els ha de revisar Nubo. Si
+  un dia s'afegeix analítica o un formulari, s'han de tocar privacitat i galetes
+  (i posar bàner de consentiment).
 - Traduccions fetes per nosaltres: les ha de llegir algú de Nubo, sobretot el
   català i el francès.
 - Formulari de contacte: ara només hi ha telèfon i correu de Nubo, perquè no hi
   ha on enviar un formulari.
-- Àudios gravats amb la veu de debò del producte en lloc de la del navegador:
-  arreglaria també els idiomes sense veu al sistema.
 
 ## Desplegament
 
