@@ -6,8 +6,10 @@ import type { Dictionary } from '@/i18n/dictionaries';
 import { agent, type Turn } from '@/i18n/turns';
 import { Icon } from '@/components/ui/icon';
 import { CallScreen, ChatScreen, PhoneFrame, SUMMARY } from './phone';
+import { isLocale } from '@/i18n/config';
 import { hasVoiceFor, subscribeVoices } from './speech';
 import { useConversation } from './use-conversation';
+import { VOICE_TRACKS } from './voice-tracks';
 
 export type Channel = 'call' | 'whatsapp';
 
@@ -36,11 +38,20 @@ export function DemoPlayer({
   reducedMotion: boolean;
 }) {
   const [sound, setSound] = useState(true);
-  const hasVoice = useSyncExternalStore(
+  const systemVoice = useSyncExternalStore(
     subscribeVoices,
     () => hasVoiceFor(speechLang),
     () => true,
   );
+  // Les gravacions d'aquest idioma, si n'hi ha: sonen igual a tot arreu i no
+  // depenen de les veus que tingui el sistema.
+  const lang = speechLang.split('-')[0];
+  const tracks = isLocale(lang) ? VOICE_TRACKS[lang] : undefined;
+  const recorded = useMemo(
+    () => (tracks && Object.keys(tracks).length > 0 ? { tracks, sector } : undefined),
+    [tracks, sector],
+  );
+  const hasVoice = Boolean(recorded) || systemVoice;
   const turns = useMemo<Turn[]>(
     () => (channel === 'call' ? demo.call : [...demo.whatsapp, agent(SUMMARY)]),
     [channel, demo],
@@ -50,6 +61,7 @@ export function DemoPlayer({
     sound: sound && hasVoice,
     callerVoice: sector.callerVoice,
     speechLang,
+    recorded,
     reducedMotion,
   });
 

@@ -3,3 +3,6 @@
 # precompilat; sense el script funciona igual, així que queda ignorat.
 ignoredBuiltDependencies:
   - unrs-resolver
+  # esbuild (via tsx, per a scripts/voice) porta el binari com a dependència
+  # opcional; el seu script només el comprova, així que també queda ignorat.
+  - esbuild

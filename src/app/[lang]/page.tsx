@@ -16,6 +16,7 @@ import { NShowcase } from '@/components/three/n-showcase';
 import { site } from '@/content/site';
 import { isLocale, LOCALE_TAGS } from '@/i18n/config';
 import { getDictionary } from '@/i18n/dictionaries';
+import { getLegal } from '@/i18n/legal';
 
 /**
  * L'ordre: què fa (hero), com funciona (la N i l'esquema), prova-ho
@@ -95,7 +96,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         <Faq t={t.faq} />
         <Contact t={t.contact} />
       </main>
-      <SiteFooter t={t.footer} nav={t.nav} />
+      <SiteFooter t={t.footer} nav={t.nav} legal={getLegal(lang).nav} lang={lang} />
       <Reveal />
       <script
         type="application/ld+json"

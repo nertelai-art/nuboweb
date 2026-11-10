@@ -1,8 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { DemoSector } from '@/content/sectors';
 import type { Speaker, Turn } from '@/i18n/turns';
 import { pickVoices, speechAvailable, turnDuration, type VoiceKind } from './speech';
+import { voiceKey, type VoiceTrack, type VoiceTracks } from './voice-key';
+import { voiceFor } from './voices';
 
 export type Status = 'idle' | 'ringing' | 'live' | 'done';
 
@@ -14,10 +17,29 @@ interface Options {
   callerVoice?: VoiceKind;
   /** Idioma de la veu (BCP 47). */
   speechLang: string;
+  /** Torns gravats d'aquest idioma i el sector, si n'hi ha: sonen en lloc del navegador. */
+  recorded?: { tracks: VoiceTracks; sector: DemoSector };
   reducedMotion: boolean;
 }
 
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+// Un WAV buit: fer-lo sonar dins del clic desbloqueja l'àudio a Safari d'iOS,
+// i després el mateix reproductor pot sonar sense un altre gest.
+const SILENCE =
+  'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+
+/** El torn gravat, si n'hi ha i encara correspon al text i a la veu d'ara. */
+export function trackFor(
+  turn: Turn,
+  index: number,
+  recorded: Options['recorded'],
+): VoiceTrack | null {
+  if (!recorded) return null;
+  const track = recorded.tracks[`${recorded.sector.id}/${index}`];
+  if (!track) return null;
+  return track.key === voiceKey(turn.text, voiceFor(turn.from, recorded.sector)) ? track : null;
+}
 
 /**
  * Reprodueix un guió torn a torn. Cada `start` obre una «tirada» nova; la
@@ -27,17 +49,19 @@ const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, 
  */
 export function useConversation(
   turns: Turn[],
-  { mode, sound, callerVoice = 'female', speechLang, reducedMotion }: Options,
+  { mode, sound, callerVoice = 'female', speechLang, recorded, reducedMotion }: Options,
 ) {
   const [status, setStatus] = useState<Status>('idle');
   const [shown, setShown] = useState(0);
   const [words, setWords] = useState(0);
   const [active, setActive] = useState<Speaker | null>(null);
   const run = useRef(0);
+  const player = useRef<HTMLAudioElement | null>(null);
 
   const halt = useCallback(() => {
     run.current += 1;
     if (speechAvailable()) window.speechSynthesis.cancel();
+    player.current?.pause();
   }, []);
 
   useEffect(() => halt, [halt]);
@@ -54,6 +78,19 @@ export function useConversation(
       setShown(turns.length);
       setStatus('done');
       return;
+    }
+
+    // Amb gravacions: el reproductor es desbloqueja ara, dins del clic, i
+    // mentre sona el timbre es baixen els àudios d'aquesta conversa.
+    const useRecorded = sound && mode === 'call' && Boolean(recorded);
+    if (useRecorded) {
+      player.current ??= new Audio();
+      player.current.src = SILENCE;
+      player.current.play().catch(() => {});
+      for (const [i, turn] of turns.entries()) {
+        const track = trackFor(turn, i, recorded);
+        if (track) void fetch(track.file).catch(() => {});
+      }
     }
 
     if (mode === 'call') {
@@ -82,7 +119,10 @@ export function useConversation(
 
       setActive(turn.from);
       setWords(0);
-      await speakTurn(turn, voices, alive, setWords);
+      const track = useRecorded ? trackFor(turn, i, recorded) : null;
+      await (track && player.current
+        ? playTrack(turn, track, player.current, alive, setWords)
+        : speakTurn(turn, voices, alive, setWords));
       if (!alive()) return;
       setShown(i + 1);
       setWords(0);
@@ -91,7 +131,7 @@ export function useConversation(
     }
     if (!alive()) return;
     setStatus('done');
-  }, [callerVoice, halt, mode, reducedMotion, sound, speechLang, turns]);
+  }, [callerVoice, halt, mode, recorded, reducedMotion, sound, speechLang, turns]);
 
   const reset = useCallback(() => {
     halt();
@@ -102,6 +142,63 @@ export function useConversation(
   }, [halt]);
 
   return { status, shown, words, active, start, reset };
+}
+
+/**
+ * Un torn gravat. Les paraules apareixen quan l'àudio arriba al final de
+ * cadascuna (`ends`, de l'alineació d'ElevenLabs). Si l'àudio no sona (sense
+ * xarxa, bloquejat), el text surt igualment al ritme gravat.
+ */
+function playTrack(
+  turn: Turn,
+  track: VoiceTrack,
+  audio: HTMLAudioElement,
+  alive: () => boolean,
+  onWords: (count: number) => void,
+) {
+  const total = turn.text.split(/\s+/).length;
+  const length = track.ends.at(-1) ?? turnDuration(turn.text);
+
+  return new Promise<void>((resolve) => {
+    let finished = false;
+    let frame = 0;
+    let started = 0;
+    let silent = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      cancelAnimationFrame(frame);
+      clearTimeout(safety);
+      audio.onended = audio.onerror = null;
+      onWords(total);
+      setTimeout(resolve, 220);
+    };
+    // Temps de reproducció: el de l'àudio, o el rellotge si no sona.
+    const now = () => (silent ? performance.now() - started : audio.currentTime * 1000);
+    const tick = () => {
+      if (!alive()) {
+        audio.pause();
+        return finish();
+      }
+      const t = now() + 60;
+      const count = track.ends.findIndex((end) => end > t);
+      onWords(count === -1 ? total : Math.min(total, count));
+      if (silent && t >= length) return finish();
+      frame = requestAnimationFrame(tick);
+    };
+    const fallBack = () => {
+      if (silent || finished) return;
+      silent = true;
+      started = performance.now();
+    };
+
+    audio.onended = finish;
+    audio.onerror = fallBack;
+    audio.src = track.file;
+    audio.play().catch(fallBack);
+    frame = requestAnimationFrame(tick);
+    const safety = setTimeout(finish, length + 4000);
+  });
 }
 
 /**

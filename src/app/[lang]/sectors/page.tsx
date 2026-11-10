@@ -7,6 +7,7 @@ import { Contact } from '@/components/sections/contact';
 import { SectorsGrid } from '@/components/sections/sectors-grid';
 import { isLocale, LOCALE_TAGS, LOCALES } from '@/i18n/config';
 import { getDictionary } from '@/i18n/dictionaries';
+import { getLegal } from '@/i18n/legal';
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -49,7 +50,7 @@ export default async function SectorsPage({ params }: Props) {
         <SectorsGrid t={t.sectors} lang={lang} variant="page" />
         <Contact t={t.contact} />
       </main>
-      <SiteFooter t={t.footer} nav={t.nav} base={base} />
+      <SiteFooter t={t.footer} nav={t.nav} legal={getLegal(lang).nav} lang={lang} base={base} />
       <Reveal />
     </>
   );

@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { site } from '@/content/site';
 import { LOCALE_TAGS, LOCALES } from '@/i18n/config';
 
-const PATHS = ['', '/sectors'];
+const PATHS = ['', '/sectors', '/legal', '/privacy', '/cookies'];
 
 /** Totes les pàgines en els quatre idiomes, cadascuna amb les seves alternatives. */
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     LOCALES.map((locale) => ({
       url: `${site.url}/${locale}${path}`,
       changeFrequency: 'monthly' as const,
-      priority: path === '' ? 1 : 0.7,
+      priority: path === '' ? 1 : path === '/sectors' ? 0.7 : 0.2,
       alternates: {
         languages: Object.fromEntries(
           LOCALES.map((l) => [LOCALE_TAGS[l].html, `${site.url}/${l}${path}`]),

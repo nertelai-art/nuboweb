@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { LOCALE_LABELS, LOCALES, type Locale } from '@/i18n/config';
 
@@ -94,6 +95,9 @@ export function ThemeToggle({ toLight, toDark }: { toLight: string; toDark: stri
 export function LanguageMenu({ current, label }: { current: Locale; label: string }) {
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
+  // Canviar d'idioma deixa a la mateixa pàgina: /es/cookies → /ca/cookies.
+  const rest = (usePathname() ?? '').split('/').slice(2).join('/');
+  const restPath = rest ? `/${rest}` : '';
 
   useEffect(() => {
     if (!open) return;
@@ -141,7 +145,7 @@ export function LanguageMenu({ current, label }: { current: Locale; label: strin
           {LOCALES.map((locale) => (
             <li key={locale}>
               <a
-                href={`/${locale}`}
+                href={`/${locale}${restPath}`}
                 hrefLang={locale}
                 lang={locale}
                 aria-current={locale === current ? 'true' : undefined}

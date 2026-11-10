@@ -17,7 +17,8 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "check": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "voice:demos": "tsx scripts/voice/generate-demo-audio.mts"
   },
   "dependencies": {
     "@react-three/drei": "10.7.9",
@@ -39,6 +40,7 @@
     "prettier": "3.9.10",
     "prettier-plugin-tailwindcss": "0.8.1",
     "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
     "typescript": "6.0.3",
     "vitest": "5.0.5"
   }

@@ -1,4 +1,6 @@
 import type { Dictionary } from '@/i18n/dictionaries';
+import type { Locale } from '@/i18n/config';
+import { LEGAL_DOCS, LEGAL_PATHS, type LegalDictionary } from '@/i18n/legal';
 import { site } from '@/content/site';
 import { BrandLogo } from './brand-logo';
 
@@ -12,10 +14,14 @@ const GROUP = [
 export function SiteFooter({
   t,
   nav,
+  legal,
+  lang,
   base = '',
 }: {
   t: Dictionary['footer'];
   nav: Dictionary['nav'];
+  legal: LegalDictionary['nav'];
+  lang: Locale;
   base?: string;
 }) {
   const links = [
@@ -89,9 +95,22 @@ export function SiteFooter({
         </div>
       </div>
       <div className="border-t border-[var(--line)]">
-        <p className="mx-auto max-w-7xl px-4 py-6 text-xs text-[var(--ink-faint)] sm:px-6 lg:px-8">
-          © {site.company}. {t.legalNote}
-        </p>
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-xs text-[var(--ink-faint)] sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+          <p>
+            © {site.company}. {t.legalNote}
+          </p>
+          <nav aria-label={legal.label}>
+            <ul className="flex flex-wrap gap-x-5 gap-y-2">
+              {LEGAL_DOCS.map((doc) => (
+                <li key={doc}>
+                  <a href={`/${lang}${LEGAL_PATHS[doc]}`} className="hover:text-[var(--ink)]">
+                    {legal[doc]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
       </div>
     </footer>
   );
